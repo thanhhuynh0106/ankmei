@@ -63,6 +63,11 @@ flutter:
      - assets/hongconen_resized.png
      - assets/vit2.gif
      - assets/captcha_ph.png
+     - assets/google.png
+     - assets/facebook.png
+     - assets/tad.jpg
+     - assets/cat_finger.jpg
+     - assets/shuukuragif.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -86,6 +91,33 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+  fonts:
+    - family: DancingScript Bold
+      fonts:
+        - asset: fonts/DancingScript-Bold.ttf
+          weight: 700
+    - family: Bangers Regular
+      fonts:
+        - asset: fonts/Bangers-Regular.ttf
+    - family: YanoneKaffeesatz Regular
+      fonts:
+        - asset: fonts/YanoneKaffeesatz-Regular.ttf
+    - family: Jura Regular
+      fonts:
+        - asset: fonts/Jura-Regular.ttf
+    - family: RobotoMono Regular
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
+    - family: Roboto Regular
+      fonts:
+        - asset: fonts/Roboto-Regular.ttf
+    - family: Roboto Medium
+      fonts:
+        - asset: fonts/Roboto-Medium.ttf
+          weight: 300
+    - family: Roboto Bold
+      fonts:
+        - asset: fonts/Roboto-Bold.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package

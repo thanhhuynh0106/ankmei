@@ -1,3 +1,4 @@
+import 'package:ankmei_app/page/home_page.dart';
 import 'package:ankmei_app/page/loading_page.dart';
 import 'package:ankmei_app/page/login_page.dart';
 import 'package:ankmei_app/page/signup_page.dart';
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoadingPage(),
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
+        '/home': (context) => const HomePage(),
       }
     );
   }

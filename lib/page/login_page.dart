@@ -111,50 +111,50 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIconColor: Color.fromRGBO(184, 207, 255, 1),
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  labelText: "Captcha",
-                                  hintText: "Enter captcha",
-                                  hintStyle: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w300,
-                                  ),
-                                  labelStyle: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  contentPadding: EdgeInsets.only(left: 5),
-                                  floatingLabelStyle: TextStyle(
-                                    // color: Color.fromRGBO(255, 168, 168, 1),
-                                    color: Color.fromRGBO(102, 141, 225, 1),
-                                    fontFamily: "Roboto Medium",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  prefixIcon: Icon(Icons.verified_user),
-                                  prefixIconColor: Color.fromRGBO(
-                                    184,
-                                    207,
-                                    255,
-                                    1,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Image.asset(
-                              "assets/captcha_ph.png",
-                              width: MediaQuery.of(context).size.width * 0.25,
-                            ),
-                          ],
-                        ),
+                        // SizedBox(height: 20),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Expanded(
+                        //       child: TextField(
+                        //         decoration: InputDecoration(
+                        //           labelText: "Captcha",
+                        //           hintText: "Enter captcha",
+                        //           hintStyle: TextStyle(
+                        //             fontSize: 15,
+                        //             fontWeight: FontWeight.w300,
+                        //           ),
+                        //           labelStyle: TextStyle(
+                        //             fontWeight: FontWeight.w400,
+                        //           ),
+                        //           contentPadding: EdgeInsets.only(left: 5),
+                        //           floatingLabelStyle: TextStyle(
+                        //             // color: Color.fromRGBO(255, 168, 168, 1),
+                        //             color: Color.fromRGBO(102, 141, 225, 1),
+                        //             fontFamily: "Roboto Medium",
+                        //             fontSize: 18,
+                        //             fontWeight: FontWeight.bold,
+                        //           ),
+                        //           border: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(30),
+                        //           ),
+                        //           prefixIcon: Icon(Icons.verified_user),
+                        //           prefixIconColor: Color.fromRGBO(
+                        //             184,
+                        //             207,
+                        //             255,
+                        //             1,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(width: 10),
+                        //     Image.asset(
+                        //       "assets/captcha_ph.png",
+                        //       width: MediaQuery.of(context).size.width * 0.25,
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(height: 30),
                         SizedBox(
                           height: 50,
@@ -163,6 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: ElevatedButton(
                               onPressed: () {
                                 // Handle login logic here
+                                Navigator.pushNamed(context, '/home');
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color.fromRGBO(
@@ -187,7 +188,43 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 15),
+                        Text(
+                          "Or login with",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                            fontFamily: "Roboto Medium",
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: IconButton(
+                                icon: Image.asset("assets/google.png"),
+                                onPressed: () {
+                                  // Handle Google login logic here
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 40),
+                            SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: IconButton(
+                                icon: Image.asset("assets/facebook.png"),
+                                onPressed: () {
+                                  // Handle Facebook login logic here
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
