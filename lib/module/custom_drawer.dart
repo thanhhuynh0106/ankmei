@@ -1,3 +1,4 @@
+import 'package:ankmei_app/module/bottom_sheet.dart';
 import 'package:ankmei_app/module/custom_header.dart';
 import 'package:flutter/material.dart';
 
@@ -10,12 +11,12 @@ class CustomDrawer extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
               Color.fromRGBO(243, 238, 233, 1),
               Color.fromRGBO(197, 216, 240, 1),
-            ]
+            ],
           ),
         ),
         child: ListView(
@@ -33,47 +34,212 @@ class CustomDrawer extends StatelessWidget {
                 Icon(Icons.auto_awesome, size: 18),
               ],
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 106),
+            // Divider(thickness: 1, color: Colors.grey),
+
+            EditBottomSheet(),
 
             // !!!!!!!!! Core section =====================
-            Padding(
-              padding: EdgeInsetsGeometry.only(left: 24, top: 24, bottom: 8),
-              child: Text("Core", style: Theme.of(context).textTheme.titleMedium),
-            ),
-            ListTile(
-              leading: Icon(Icons.today),
-              title: Text("Today"),
-              onTap: () {
-                Navigator.pushNamed(context, "/today");
-              },            
-            ),
-            ListTile(
-              leading: Icon(Icons.upcoming),
-              title: Text("Upcoming"),
-              onTap: () {
-                Navigator.pushNamed(context, "/upcoming");
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.calendar_month),
-              title: Text("Calendar"),
-              onTap: () {
-                Navigator.pushNamed(context, "/calendar");
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.folder_open),
-              title: Text("Projects"),
-              onTap: () {
-                Navigator.pushNamed(context, "/projects");
-              },
+            ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(horizontal: 20),
+              collapsedShape: const RoundedRectangleBorder(
+                side: BorderSide.none,
+              ),
+              shape: const RoundedRectangleBorder(side: BorderSide.none),
+              initiallyExpanded: true,
+              title: Text(
+                "Core",
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black87,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 26),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.today, size: 22),
+                        ),
+                        title: Text("Today", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/today");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.upcoming, size: 22),
+                        ),
+                        title: Text("Upcoming", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/upcoming");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.calendar_month, size: 22),
+                        ),
+                        title: Text("Calendar", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/calendar");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.folder_open, size: 22),
+                        ),
+                        title: Text("Projects", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/projects");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.assignment_ind, size: 22),
+                        ),
+                        title: Text("Assgined", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/assigned");
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
 
             // !!!!!!!!! Explore section =====================
-            Padding(
-              padding: EdgeInsetsGeometry.only(left: 24, top: 24, bottom: 8),
-              child: Text("Explore", style: Theme.of(context).textTheme.titleMedium),
-            )
+            ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(horizontal: 20),
+              collapsedShape: const RoundedRectangleBorder(
+                side: BorderSide.none,
+              ),
+              shape: const RoundedRectangleBorder(side: BorderSide.none),
+              title: Text(
+                "Utilities",
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black87,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 26),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.sunny_snowing, size: 22),
+                        ),
+                        title: Text("Weather", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/weather");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.access_time, size: 22),
+                        ),
+                        title: Text("Clock", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/clock");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.note, size: 22),
+                        ),
+                        title: Text("Notes", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/notes");
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            // !!!!!!!!! Settings section =====================
+            ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(horizontal: 20),
+              collapsedShape: const RoundedRectangleBorder(
+                side: BorderSide.none,
+              ),
+              shape: const RoundedRectangleBorder(side: BorderSide.none),
+              title: Text(
+                "Settings",
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.black87,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 26),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.person, size: 22),
+                        ),
+                        title: Text("Profile", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/profile");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.settings, size: 22),
+                        ),
+                        title: Text("Settings", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/settings");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.info, size: 22),
+                        ),
+                        title: Text("About", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/about");
+                        },
+                      ),
+                      ListTile(
+                        leading: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Icon(Icons.logout, size: 22),
+                        ),
+                        title: Text("Logout", style: TextStyle(fontSize: 14)),
+                        onTap: () {
+                          Navigator.pushNamed(context, "/logout");
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
