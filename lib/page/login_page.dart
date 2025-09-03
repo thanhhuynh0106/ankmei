@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:ankmei_app/env.dart';
+import 'package:ankmei_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -8,6 +13,83 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<DateTime?> _confirmDialog(BuildContext context, String content) {
+    return showDialog<DateTime>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            titlePadding: EdgeInsets.all(0.0),
+            title: Padding(
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.0457),
+              child: new Center(
+                child: new Text(
+                  content,
+                  textAlign: TextAlign.justify,
+                  style: new TextStyle(
+                      color: Colors.black,
+                      height: 1.5,
+                      fontFamily: "Roboto Medium",
+                      fontSize: MediaQuery.of(context).size.width * 0.04),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: new Text("Return"),
+              ),
+            ],
+          );
+        });
+  }
+
+
+  void loginUser() async {
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      _confirmDialog(context, "Please fill in all fields!? ");
+      return;
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Opacity(
+              opacity: 0.5,
+              child: const ModalBarrier(dismissible: false, color: Color.fromARGB(255, 218, 218, 218)),
+            ),
+            Center(child: CircularProgressIndicator()),
+          ],
+        );
+      },
+    );
+
+    final ok = await AuthService.instance.login(
+      username: _usernameController.text,
+      password: _passwordController.text,
+    );
+
+    if (!mounted) return;
+    Navigator.of(context, rootNavigator: true).pop();
+
+    if (ok) {
+      Navigator.pushNamed(context, '/home');
+    } else {
+      _confirmDialog(context, "Login failed!? Please check your credentials.");
+    }
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 40),
                         TextField(
+                          controller: _usernameController,
                           decoration: InputDecoration(
                             labelText: "Username",
                             hintText: "Enter your username",
@@ -87,6 +170,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         SizedBox(height: 20),
                         TextField(
+                          controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
                             labelText: "Password",
@@ -162,8 +246,7 @@ class _LoginPageState extends State<LoginPage> {
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {
-                                // Handle login logic here
-                                Navigator.pushNamed(context, '/home');
+                                loginUser();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Color.fromRGBO(
@@ -201,22 +284,22 @@ class _LoginPageState extends State<LoginPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            // SizedBox(
+                            //   width: 50,
+                            //   height: 50,
+                            //   child: IconButton(
+                            //     icon: Image.asset("assets/google.png"),
+                            //     onPressed: () {
+                            //       // Handle Google login logic here
+                            //     },
+                            //   ),
+                            // ),
+                            // SizedBox(width: 40),
                             SizedBox(
                               width: 50,
                               height: 50,
                               child: IconButton(
-                                icon: Image.asset("assets/google.png"),
-                                onPressed: () {
-                                  // Handle Google login logic here
-                                },
-                              ),
-                            ),
-                            SizedBox(width: 40),
-                            SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: IconButton(
-                                icon: Image.asset("assets/facebook.png"),
+                                icon: Image.asset("assets/github.png"),
                                 onPressed: () {
                                   // Handle Facebook login logic here
                                 },

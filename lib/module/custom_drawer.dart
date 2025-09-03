@@ -1,5 +1,7 @@
 import 'package:ankmei_app/module/bottom_sheet.dart';
 import 'package:ankmei_app/module/custom_header.dart';
+import 'package:ankmei_app/providers/current_user_store.dart';
+import 'package:ankmei_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -7,6 +9,13 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final store = CurrentUserStore.instance;
+    final displayName = store.user?.displayName ?? 'Guest';
+    final username = store.user?.username ?? 'guest';
+    // Fallback to assets when not available
+    final backgroundUrl = store.user?.backgroundUrl ?? 'assets/shuukuragif.gif';
+    final avatarUrl = store.user?.avatarUrl ?? 'assets/cat_finger.jpg';
+
     return Drawer(
       child: DecoratedBox(
         decoration: BoxDecoration(
@@ -23,10 +32,10 @@ class CustomDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             CustomHeader(
-              displayName: "Soi",
-              username: "thanhhyun_n",
-              backgroundUrl: "assets/shuukuragif.gif",
-              avatarUrl: "assets/cat_finger.jpg",
+              displayName: displayName,
+              username: username,
+              backgroundUrl: backgroundUrl,
+              avatarUrl: avatarUrl,
               badges: const [
                 Icon(Icons.favorite, size: 18),
                 Icon(Icons.visibility_off, size: 18),
@@ -231,8 +240,9 @@ class CustomDrawer extends StatelessWidget {
                           child: Icon(Icons.logout, size: 22),
                         ),
                         title: Text("Logout", style: TextStyle(fontSize: 14)),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/logout");
+                        onTap: () async {
+                          await AuthService.instance.logout();
+                        
                         },
                       ),
                     ],

@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'package:ankmei_app/providers/current_user_store.dart';
+import 'package:ankmei_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class LoadingPage extends StatefulWidget {
@@ -13,9 +14,17 @@ class _LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, '/login');
-    });
+    _bootstrap();
+    // Timer(const Duration(seconds: 2), () {
+    //   Navigator.pushReplacementNamed(context, '/login');
+    // });
+  }
+
+  Future<void> _bootstrap() async {
+    await AuthService.instance.loadFromStorage();
+    final isAuthed = CurrentUserStore.instance.isAuthenticated;
+    if (!mounted) return;
+    Navigator.pushReplacementNamed(context, isAuthed ? '/home' : '/login');
   }
 
   @override

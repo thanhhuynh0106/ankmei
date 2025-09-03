@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      // FAB chỉ xuất hiện ở Home (nếu muốn)
+      // index = 0 - HOME
       floatingActionButton: _index == 0
           ? FloatingActionButton(
               onPressed: () {/* tạo nhanh task/chức năng home */},

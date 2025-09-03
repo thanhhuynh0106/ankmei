@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'package:ankmei_app/env.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -10,11 +14,129 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   bool _obscureText = true;
   bool _obscureTextConfirm = true;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
+  void registerUser() async {
+    debugPrint('DEBUG: username = \'${_usernameController.text}\'');
+    debugPrint('DEBUG: email = \'${_emailController.text}\'');
+    debugPrint('DEBUG: password = \'${_passwordController.text}\'');
+    debugPrint('DEBUG: confirmPassword = \'${_confirmPasswordController.text}\'');
 
-  void _checkPasswordValidation() {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      debugPrint('DEBUG: Password and Confirm Password do not match');
+      _confirmDialog(context, "Password and confirm password do not match!?");
+      return;
+    }
 
+    if (_usernameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      debugPrint('DEBUG: One or more fields are empty');
+      _confirmDialog(context, "Please fill in all fields!?");
+      return;
+    }
+
+    var registerBody = {
+      "username": _usernameController.text,
+      "email": _emailController.text,
+      "password": _passwordController.text,
+    };
+    debugPrint('DEBUG: registerBody = $registerBody');
+
+    var url = Uri.parse('${Env.apiUrl}/auth/register');
+    debugPrint('DEBUG: POST url = $url');
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(registerBody),
+    );
+    debugPrint('DEBUG: response.statusCode = ${response.statusCode}');
+    debugPrint('DEBUG: response.body = ${response.body}');
+
+    if (response.statusCode == 201) {
+      debugPrint('DEBUG: Registration successful, showing loading spinner and navigating to login page after 5 seconds');
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Stack(
+            children: [
+              Opacity(
+                opacity: 0.5,
+                child: const ModalBarrier(dismissible: false, color: Color.fromARGB(255, 121, 121, 121)),
+              ),
+              Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+      await Future.delayed(Duration(seconds: 4));
+      if (mounted) {
+        Navigator.of(context, rootNavigator: true).pop();
+        Navigator.pushNamed(context, '/home');
+      }
+    } else {
+      debugPrint('DEBUG: Registration failed, showing dialog');
+      String errorMsg = 'Registration failed';
+      try {
+        var body = jsonDecode(response.body);
+        if (body is Map && body['message'] != null) {
+          errorMsg = body['message'].toString();
+        } else if (body is String) {
+          errorMsg = body;
+        }
+      } catch (e) {
+        errorMsg = response.body;
+      }
+      _confirmDialog(context, errorMsg);
+    }
   }
+
+  Future<DateTime?> _confirmDialog(BuildContext context, String content) {
+    return showDialog<DateTime>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            titlePadding: EdgeInsets.all(0.0),
+            title: Padding(
+              padding:
+                  EdgeInsets.all(MediaQuery.of(context).size.width * 0.0457),
+              child: Center(
+                child: Text(
+                  content,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      color: Colors.black,
+                      height: 1.5,
+                      fontFamily: "Roboto Medium",
+                      fontSize: MediaQuery.of(context).size.width * 0.04),
+                ),
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("Return"),
+              ),
+            ],
+          );
+        });
+  }
+
 
   @override
   void initState() {
@@ -62,10 +184,6 @@ class _SignupPageState extends State<SignupPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  // Image.asset(
-                  //   "assets/hongconen_resized.png",
-                  //   width: MediaQuery.of(context).size.width * 0.5,
-                  // ),
                   SizedBox(height: 30),
                   Text(
                     "Create an account to keep memories unforgettable!!!\n/ᐠ˵- ⩊ -˵マ",
@@ -82,6 +200,7 @@ class _SignupPageState extends State<SignupPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       TextField(
+                        controller: _usernameController,
                         decoration: InputDecoration(
                           labelText: 'Username',
                           hintText: "Enter your username",
@@ -106,6 +225,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           hintText: "Enter your email",
@@ -130,6 +250,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _passwordController,
                         obscureText: _obscureText,
                         decoration: InputDecoration(
                           labelText: 'Password',
@@ -164,6 +285,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       SizedBox(height: 15),
                       TextField(
+                        controller: _confirmPasswordController,
                         obscureText: _obscureTextConfirm,
                         decoration: InputDecoration(
                           labelText: 'Confirm Password',
@@ -202,7 +324,7 @@ class _SignupPageState extends State<SignupPage> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Handle sign up logic here
+                            registerUser();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromRGBO(102, 141, 225, 1),
@@ -221,16 +343,6 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                       ),
                       SizedBox(height: 15),
-                      // Text(
-                      //   textAlign: TextAlign.center,
-                      //   "By signing up, you agree to our Terms & Conditions",
-                      //   style: TextStyle(
-                      //     fontSize: 14,
-                      //     color: Colors.grey,
-                      //     fontWeight: FontWeight.w300,
-                        
-                      //   ),
-                      // ),
                       SizedBox(height: 10),
                       Text(
                         "Or sign up with",
@@ -244,23 +356,23 @@ class _SignupPageState extends State<SignupPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // SizedBox(
+                          //   width: 50,
+                          //   height: 50,
+                          //   child: IconButton(
+                          //     icon: Image.asset("assets/google.png"),
+                          //     iconSize: 20,
+                          //     onPressed: () {
+                          //       // Handle Google sign up logic here
+                          //     },
+                          //   ),
+                          // ),
+                          // SizedBox(width: 40),
                           SizedBox(
                             width: 50,
                             height: 50,
                             child: IconButton(
-                              icon: Image.asset("assets/google.png"),
-                              iconSize: 20,
-                              onPressed: () {
-                                // Handle Google sign up logic here
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 40),
-                          SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: IconButton(
-                              icon: Image.asset("assets/facebook.png"),
+                              icon: Image.asset("assets/github.png"),
                               iconSize: 20,
                               onPressed: () {
                                 // Handle Facebook sign up logic here

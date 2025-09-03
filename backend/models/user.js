@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     displayName: {
         type: String,
-        required: true,
     },
     username: {
         type: String,
@@ -29,7 +28,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    hashedPassword: {
+    password: {
         type: String,
         required: true,
     },
@@ -42,6 +41,11 @@ const userSchema = new mongoose.Schema({
         enum: ['local', 'google', 'facebook'],
         default: 'local',
     },
+    userRole: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user',
+    }
 });
 
 module.exports = mongoose.model('User', userSchema);
