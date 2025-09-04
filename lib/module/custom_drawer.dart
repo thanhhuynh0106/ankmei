@@ -10,8 +10,8 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final store = CurrentUserStore.instance;
-    final displayName = store.user?.displayName ?? 'Guest';
-    final username = store.user?.username ?? 'guest';
+    final displayName = store.user?.displayName;
+    final username = store.user?.username;
     // Fallback to assets when not available
     final backgroundUrl = store.user?.backgroundUrl ?? 'assets/shuukuragif.gif';
     final avatarUrl = store.user?.avatarUrl ?? 'assets/cat_finger.jpg';
@@ -32,8 +32,8 @@ class CustomDrawer extends StatelessWidget {
           padding: EdgeInsets.zero,
           children: [
             CustomHeader(
-              displayName: displayName,
-              username: username,
+              displayName: displayName!,
+              username: username!,
               backgroundUrl: backgroundUrl,
               avatarUrl: avatarUrl,
               badges: const [
@@ -55,12 +55,11 @@ class CustomDrawer extends StatelessWidget {
                 side: BorderSide.none,
               ),
               shape: const RoundedRectangleBorder(side: BorderSide.none),
-              initiallyExpanded: true,
               title: Text(
                 "Core",
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.black87,
                   letterSpacing: 1.2,
                 ),
@@ -137,7 +136,7 @@ class CustomDrawer extends StatelessWidget {
                 "Utilities",
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.black87,
                   letterSpacing: 1.2,
                 ),
@@ -190,11 +189,12 @@ class CustomDrawer extends StatelessWidget {
                 side: BorderSide.none,
               ),
               shape: const RoundedRectangleBorder(side: BorderSide.none),
+              initiallyExpanded: true,
               title: Text(
                 "Settings",
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                   color: Colors.black87,
                   letterSpacing: 1.2,
                 ),
@@ -241,8 +241,37 @@ class CustomDrawer extends StatelessWidget {
                         ),
                         title: Text("Logout", style: TextStyle(fontSize: 14)),
                         onTap: () async {
-                          await AuthService.instance.logout();
-                        
+                          showDialog(
+                            context: context,
+                            builder:(context) {
+                              return AlertDialog(
+                                contentPadding: EdgeInsets.all(15),
+                                contentTextStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500
+                                  ),
+                                content: Text("Are you sure you want to logout!?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await AuthService.instance.logout();
+                                      if (context.mounted) {
+                                        Navigator.of(context).pop();
+                                        Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+                                      }
+                                    },
+                                    child: Text("Logout"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
                     ],

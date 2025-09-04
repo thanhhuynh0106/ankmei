@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     displayName: {
         type: String,
+        default: "Guest",
     },
     username: {
         type: String,
@@ -21,6 +22,10 @@ const userSchema = new mongoose.Schema({
         type: [String],
         default: [],
     },
+    bio: {
+        type: String,
+        default: '',
+    },
 
     // backend fields
     email: {
@@ -38,7 +43,7 @@ const userSchema = new mongoose.Schema({
     },
     provider: {
         type: String,
-        enum: ['local', 'google', 'facebook'],
+        enum: ['local', 'github'],
         default: 'local',
     },
     userRole: {

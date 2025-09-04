@@ -36,12 +36,13 @@ router.post('/register', async (req, res) => {
                 _id: savedUser._id,
                 username: savedUser.username,
                 email: savedUser.email,
-                displayName: savedUser.displayName ?? savedUser.username,
+                displayName: savedUser.displayName,
                 backgroundUrl: savedUser.backgroundUrl,
                 avatarUrl: savedUser.avatarUrl,
                 provider: savedUser.provider,
                 userRole: savedUser.userRole,
                 badgeIds: savedUser.badgeIds,
+                bio: savedUser.bio,
                 createdAt: savedUser.createdAt,
             }
         });
@@ -76,12 +77,13 @@ router.post('/login', async (req, res) => {
             _id: user._id,
             username: user.username,
             email: user.email,
-            displayName: user.displayName ?? user.username,
+            displayName: user.displayName,
             backgroundUrl: user.backgroundUrl,
             avatarUrl: user.avatarUrl,
             provider: user.provider,
             userRole: user.userRole,
             badgeIds: user.badgeIds,
+            bio: user.bio,
             createdAt: user.createdAt,
         }
     });

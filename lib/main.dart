@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "AnkMei",
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 225, 139, 168),
-          primary: const Color(0xFF00BFFF),
-          secondary: const Color(0xFF1E90FF),
-        ),
+        // colorScheme: ColorScheme.fromSeed(
+        //   seedColor: const Color.fromARGB(255, 225, 139, 168),
+        //   primary: const Color(0xFF00BFFF),
+        //   secondary: const Color(0xFF1E90FF),
+        // ),
         textTheme: TextTheme(
           displayMedium: TextStyle(
             fontFamily: "Roboto Medium",

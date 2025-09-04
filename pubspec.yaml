@@ -74,6 +74,11 @@ flutter:
      - assets/cat_finger.jpg
      - assets/shuukuragif.gif
      - assets/github.png
+     - assets/natchan.png
+     - assets/home.png
+     - assets/user.png
+     - assets/calendar.png
+     - assets/notification.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
