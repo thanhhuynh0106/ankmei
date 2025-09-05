@@ -48,7 +48,130 @@ class CustomDrawer extends StatelessWidget {
 
             EditBottomSheet(),
 
+            SizedBox(height: 10),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(14, 10, 10, 14),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 240, 246, 252),
+                      Color.fromARGB(255, 226, 237, 250),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x0F000000),
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Friends",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: const Color.fromARGB(255, 78, 78, 78),
+                              letterSpacing: .2,
+                            )
+                          )
+                        ),
+                        _AvatarChip(value: "https://i.pravatar.cc/300"),
+                        _AvatarChip(value: "https://i.pravatar.cc/303"),
+                        _AvatarChip(value: "https://i.pravatar.cc/305"),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0),
+                          child: IconButton(
+                          onPressed: () {
+                            
+                          },
+                          icon: Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 16,
+                            color: Colors.grey.shade600,
+                          ),
+                          constraints: BoxConstraints(),
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          ),
+                        )
+                      ],
+                    ),
+                  ]
+                ),
+              ),
+            ),
+
+            SizedBox(height: 20),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(14, 10, 10, 14),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 240, 246, 252),
+                      Color.fromARGB(255, 226, 237, 250),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: Colors.grey.shade200, width: 1),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0x0F000000),
+                      blurRadius: 10,
+                      offset: Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(children: [
+                      Expanded(
+                        child: Text(
+                          "Notes (only me)",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: const Color.fromARGB(255, 78, 78, 78),
+                            letterSpacing: .2,
+                          )
+                        )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0),
+                        child:  Icon(
+                          Icons.note_add_rounded,
+                          size: 16,
+                          color: Colors.grey.shade600,
+                        )
+                      )
+                    ],)
+                  ],
+                ),
+              ),
+              ), 
+            
+
             // !!!!!!!!! Core section =====================
+            SizedBox(height: 20),
             ExpansionTile(
               tilePadding: const EdgeInsets.symmetric(horizontal: 20),
               collapsedShape: const RoundedRectangleBorder(
@@ -166,16 +289,6 @@ class CustomDrawer extends StatelessWidget {
                           Navigator.pushNamed(context, "/clock");
                         },
                       ),
-                      ListTile(
-                        leading: Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Icon(Icons.note, size: 22),
-                        ),
-                        title: Text("Notes", style: TextStyle(fontSize: 14)),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/notes");
-                        },
-                      ),
                     ],
                   ),
                 ),
@@ -204,16 +317,6 @@ class CustomDrawer extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 26),
                   child: Column(
                     children: [
-                      ListTile(
-                        leading: Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Icon(Icons.person, size: 22),
-                        ),
-                        title: Text("Profile", style: TextStyle(fontSize: 14)),
-                        onTap: () {
-                          Navigator.pushNamed(context, "/profile");
-                        },
-                      ),
                       ListTile(
                         leading: Padding(
                           padding: const EdgeInsets.only(right: 10),
@@ -282,6 +385,31 @@ class CustomDrawer extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+
+
+
+class _AvatarChip extends StatelessWidget {
+  final String value;
+  const _AvatarChip({required this.value});
+
+  bool get _isUrl => value.startsWith('http://') || value.startsWith('https://');
+
+  @override
+  Widget build(BuildContext context) {
+    return CircleAvatar(
+      radius: 14,
+      backgroundColor: Colors.grey.shade200,
+      backgroundImage: _isUrl ? NetworkImage(value) : null,
+      child: !_isUrl
+          ? Text(
+              value.length >= 2 ? value.substring(0, 2).toUpperCase() : value.toUpperCase(),
+              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.black87),
+            )
+          : null,
     );
   }
 }

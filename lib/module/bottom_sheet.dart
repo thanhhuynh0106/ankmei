@@ -1,3 +1,5 @@
+import 'package:ankmei_app/providers/current_user_store.dart';
+import 'package:ankmei_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 
 class EditBottomSheet extends StatefulWidget {
@@ -8,25 +10,53 @@ class EditBottomSheet extends StatefulWidget {
 }
 
 class _BottomSheetState extends State<EditBottomSheet> {
-  String text = "";
+  final store = CurrentUserStore.instance;
+  String? text;
+
+  @override
+  void initState() {
+    super.initState();
+    store.addListener(_onStoreChange);
+    _updateBio();
+  }
+
+  @override
+  void dispose() {
+    store.removeListener(_onStoreChange);
+    super.dispose();
+  }
+
+  void _onStoreChange() {
+    if (mounted) {
+      setState(() {
+        _updateBio();
+      });
+    }
+  }
+
+  void _updateBio() {
+    text = store.user?.bio;
+  }
 
   Future<void> _openEditBottomSheet() async {
     final newText = await _showEditBottomSheet(
       context: context,
-      initialText: text,
+      initialText: text ?? "AA",
       title: "Edit your note",
       hintText: "I love Emilia",
       maxLine: 5,
     );
 
     if (newText != null && newText.trim() != text) {
-      setState(() => text = newText.trim());
+      await updateUserBio(newText.trim());
+      if (mounted) Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final borderColor = Colors.grey.shade200;
+    final currentBio = store.user?.bio ?? "";
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -85,10 +115,10 @@ class _BottomSheetState extends State<EditBottomSheet> {
                 ),
               ],
             ),
-            Divider(height: 1, thickness: 1, color: borderColor),
+            // Divider(height: 1, thickness: 1, color: borderColor),
             SizedBox(height: 15),
             Text(
-              text,
+              currentBio,
               style: const TextStyle(
                 color: Colors.black54,
                 fontSize: 14,

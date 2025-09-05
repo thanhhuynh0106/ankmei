@@ -4,7 +4,6 @@ import 'package:ankmei_app/module/custom_appbar.dart';
 import 'package:ankmei_app/module/custom_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ankmei_app/module/bottom_item.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

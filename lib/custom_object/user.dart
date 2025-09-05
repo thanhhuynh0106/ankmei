@@ -9,6 +9,7 @@ class User {
   final String? email;
   final String? backgroundUrl;
   final String? avatarUrl;
+  final String? bio;
   final String provider;
   final String userRole;
   final List<String>? badgeIds;
@@ -17,6 +18,7 @@ class User {
     required this.username,
     this.displayName,
     this.email,
+    this.bio,
     this.backgroundUrl,
     this.avatarUrl,
     required this.provider,
