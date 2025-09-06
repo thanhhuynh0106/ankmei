@@ -2,6 +2,7 @@ import 'package:ankmei_app/custom_object/task.dart';
 import 'package:ankmei_app/module/create_task_card.dart';
 import 'package:ankmei_app/module/custom_appbar.dart';
 import 'package:ankmei_app/module/custom_drawer.dart';
+import 'package:ankmei_app/page/create_task_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -87,8 +88,15 @@ class _HomePageState extends State<HomePage> {
           width: 58,
           height: 58,
           child: FloatingActionButton(
-            onPressed: () {
-              // action nhanh
+            onPressed: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CreateTaskPage())
+              );
+              if (result == true) {
+                // Refresh data if a new task was created
+                setState(() {});
+              }
             },
             child: const Icon(Icons.add, size: 32),
             shape: RoundedRectangleBorder(
@@ -197,15 +205,35 @@ class _TodayPreview extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
-        CreateTaskCard(task: Task(
-          id: '1',
-          title: 'Design Meeting',
-          description: 'Discuss the new app design with the team.',
-          category: 'Work',
-          priority: TaskPriority.medium,
-          assignees: ['AD', 'MT'],
-          dueDate: DateTime.now(),
-        ))
+        CreateTaskCard(
+          task: Task(
+            id: 'sample1',
+            title: 'Save some money and go catch a jellyfish',
+            description: 'Reach 2m then go',
+            category: 'Savings',
+            createdBy: '68b92c5b155a3ff6fa7669a1',
+            priority: TaskPriority.low,
+            status: TaskStatus.inProgress,
+            assignees: ['68b92c5b155a3ff6fa7669a1'],
+            dueDate: DateTime(2025, 12, 1),
+            subtasks: [
+              Subtask(
+                title: "Thu thập dữ liệu",
+                isCompleted: false,
+                assignees: ["60d5ec49c6d1a60015f8a0b1"],
+                orderIndex: 0,
+                dueDate: DateTime.parse("2024-12-10T17:00:00Z"),
+              ),
+              Subtask(
+                title: "Phân tích dữ liệu",
+                isCompleted: false,
+                assignees: ["60d5ec49c6d1a60015f8a0b2"],
+                orderIndex: 1,
+                dueDate: DateTime.parse("2024-12-20T17:00:00Z"),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

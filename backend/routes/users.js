@@ -4,25 +4,37 @@ var router = express.Router();
 
 const User = require('../models/user');
 
+// get all users
 router.get('/', verifiedToken, (req, res) => {
     User.find({})
+      .select('-password')
       .then(users => res.json(users))
       .catch(err => res.status(500).json({ error: err.message }));
 })
 
-
-module.exports = router;
-
 // get current user profile
 router.get('/me', verifiedToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.userId).select('-password');
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
+  User.findById(req.userId)
+    .select('-password')
+    .then(user => {
+      if (!user) return res.status(404).json({ message: 'User not found' });
+      res.json(user);
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
 });
+
+
+router.get('/:id', verifiedToken, (req, res) => {
+    User.findById(req.params.id)
+      .select('-password -email -provider -userRole -createdAt')
+      .then(user => {
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
+      })
+      .catch(err => res.status(500).json({ error: err.message }));
+})
+
+module.exports = router;
 
 
 // update current user profile

@@ -19,8 +19,6 @@ class CreateTaskCard extends StatelessWidget {
     return '${dt.day}/${dt.month}/${dt.year}';
   }
 
-
-
   const CreateTaskCard({super.key, required this.task, this.onTap});
 
   @override
@@ -48,9 +46,20 @@ class CreateTaskCard extends StatelessWidget {
               // ================= Category + Priority !!!!!!!!!!!!!!!!!!!!!!!!!
               Row(
                 children: [
-                    _Chip(label: task.category, fg: Colors.green, bg: Colors.orangeAccent, dot: false, icon: Icons.category),
-                    SizedBox(width: 10),
-                    _Chip(label: task.priority.label, fg: task.priority.colorPriority, bg: task.priority.colorBackground, dot: true),
+                  _Chip(
+                    label: task.category,
+                    fg: Colors.green,
+                    bg: Colors.orangeAccent,
+                    dot: false,
+                    icon: Icons.category,
+                  ),
+                  SizedBox(width: 10),
+                  _Chip(
+                    label: task.priority.label,
+                    fg: task.priority.colorPriority,
+                    bg: task.priority.colorBackground,
+                    dot: true,
+                  ),
                 ],
               ),
               SizedBox(height: 10),
@@ -100,19 +109,38 @@ class CreateTaskCard extends StatelessWidget {
                   // const SizedBox(width: 4),
                   // Text('${task.comments}', style: textSub),
                 ],
-              )
+              ),
+              // Thêm vào phần cuối của CreateTaskCard widget
+              if (task.subtasks.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(Icons.list, size: 16, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text(
+                      'subtasks',
+                      style: const TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: LinearProgressIndicator(
+                        value: 50, //task.subtasksProgress,
+                        backgroundColor: Colors.grey[300],
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          1 == 1.0 ? Colors.green : Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ],
-          )
-        )
-      )
+          ),
+        ),
+      ),
     );
   }
 }
-
-
-
-
-
 
 class _Chip extends StatelessWidget {
   final String label;
@@ -122,14 +150,21 @@ class _Chip extends StatelessWidget {
   final IconData? icon;
 
   const _Chip({
-    required this.label, required this.fg, required this.bg, required this.dot, this.icon,
+    required this.label,
+    required this.fg,
+    required this.bg,
+    required this.dot,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -138,16 +173,26 @@ class _Chip extends StatelessWidget {
             const SizedBox(width: 4),
           ],
           if (dot) ...[
-            Container(width: 8, height: 8, decoration: BoxDecoration(color: fg, shape: BoxShape.circle)),
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(color: fg, shape: BoxShape.circle),
+            ),
             const SizedBox(width: 6),
           ],
-          Text(label, style: TextStyle(fontSize: 12, color: fg, fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: fg,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
   }
 }
-
 
 class _Assignees extends StatelessWidget {
   final List<String> assignees;
@@ -179,7 +224,11 @@ class _Assignees extends StatelessWidget {
                 backgroundColor: Colors.grey.shade300,
                 child: Text(
                   '+$extra',
-                  style: const TextStyle(fontSize: 10, color: Colors.black87, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ),
@@ -193,7 +242,8 @@ class _AvatarChip extends StatelessWidget {
   final String value;
   const _AvatarChip({required this.value});
 
-  bool get _isUrl => value.startsWith('http://') || value.startsWith('https://');
+  bool get _isUrl =>
+      value.startsWith('http://') || value.startsWith('https://');
 
   @override
   Widget build(BuildContext context) {
@@ -203,8 +253,14 @@ class _AvatarChip extends StatelessWidget {
       backgroundImage: _isUrl ? NetworkImage(value) : null,
       child: !_isUrl
           ? Text(
-              value.length >= 2 ? value.substring(0, 2).toUpperCase() : value.toUpperCase(),
-              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: Colors.black87),
+              value.length >= 2
+                  ? value.substring(0, 2).toUpperCase()
+                  : value.toUpperCase(),
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: Colors.black87,
+              ),
             )
           : null,
     );
